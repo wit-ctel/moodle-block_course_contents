@@ -100,6 +100,7 @@ class block_course_contents extends block_base {
         $r = 0;
         foreach ($sections as $section) {
             $i = $section->section;
+            $selectedclass = ($i == $selected) ? ' selected' : '';
             if ($i > $course->numsections) {
                 break;
             }
@@ -113,9 +114,9 @@ class block_course_contents extends block_base {
             }
             $odd = $r % 2;
             if ($format->is_section_current($section)) {
-                $text .= html_writer::start_tag('li', array('class' => 'section-item current r'.$odd));
+                $text .= html_writer::start_tag('li', array('class' => 'section-item current r'.$odd.$selectedclass));
             } else {
-                $text .= html_writer::start_tag('li', array('class' => 'section-item r'.$odd));
+                $text .= html_writer::start_tag('li', array('class' => 'section-item r'.$odd.$selectedclass));
             }
 
             if (empty($this->config) or !isset($this->config->enumerate) or is_null($this->config->enumerate) or !empty($this->config->enumerate)) {

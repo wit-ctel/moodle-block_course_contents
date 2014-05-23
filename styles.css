@@ -1,11 +1,13 @@
 .block_course_contents .section-list {
     margin: 0px;
     padding-left: 20px;
+    
 }
 
 .block_course_contents .section-item {
     list-style-image: url([[pix:b]]);
-    margin-bottom: 6pt;
+    margin-bottom: 6px;
+    padding: 3px;
 }
 
 .block_course_contents .section-title:before {
@@ -16,6 +18,10 @@
 
 .block_course_contents .section-item.current {
     font-weight: bold;
+}
+
+.block_course_contents .section-item.selected {
+  background-color: #eee;
 }
 
 .block_course_contents .section-item.r0 {
