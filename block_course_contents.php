@@ -126,11 +126,8 @@ class block_course_contents extends block_base {
                 $title = html_writer::tag('span', $title, array('class' => 'section-title'));
             }
 
-            if (is_null($selected) or $i <> $selected) {
-                $text .= html_writer::link($format->get_view_url($section), $title, array('class' => $section->visible ? '' : 'dimmed'));
-            } else {
-                $text .= $title;
-            }
+            $text .= html_writer::link($format->get_view_url($section), $title, array('class' => $section->visible ? '' : 'dimmed'));
+            
             $text .= html_writer::end_tag('li');
             $r++;
         }
