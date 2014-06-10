@@ -104,9 +104,6 @@ class block_course_contents extends block_base {
             if ($i > $course->numsections) {
                 break;
             }
-            if (!$section->uservisible) {
-                continue;
-            }
             if (!empty($section->name)) {
                 $title = format_string($section->name, true, array('context' => $context));
             } else {
@@ -126,8 +123,11 @@ class block_course_contents extends block_base {
                 $title = html_writer::tag('span', $title, array('class' => 'section-title'));
             }
 
-            $text .= html_writer::link($format->get_view_url($section), $title, array('class' => $section->visible ? '' : 'dimmed'));
-            
+            if (!$section->uservisible) {
+               $text .= html_writer::tag('s', $title, array('class' => 'dimmed_text'));
+            } else {
+              $text .= html_writer::link($format->get_view_url($section), $title, array('class' => $section->visible ? '' : 'dimmed'));
+            }
             $text .= html_writer::end_tag('li');
             $r++;
         }
