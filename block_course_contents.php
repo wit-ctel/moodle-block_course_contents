@@ -99,37 +99,44 @@ class block_course_contents extends block_base {
         $text = html_writer::start_tag('ul', array('class' => 'section-list'));
         $r = 0;
         foreach ($sections as $section) {
-            $i = $section->section;
-            $selectedclass = ($i == $selected) ? ' selected' : '';
-            if ($i > $course->numsections) {
-                break;
-            }
-            if (!empty($section->name)) {
-                $title = format_string($section->name, true, array('context' => $context));
-            } else {
-               $title = $format->get_section_name($section);
-            }
-            $odd = $r % 2;
-            if ($format->is_section_current($section)) {
-                $text .= html_writer::start_tag('li', array('class' => 'section-item current r'.$odd.$selectedclass));
-            } else {
-                $text .= html_writer::start_tag('li', array('class' => 'section-item r'.$odd.$selectedclass));
-            }
+            
+            if ($section->uservisible) {
+                $i = $section->section;
+                $selectedclass = ($i == $selected) ? ' selected' : '';
+                if ($i > $course->numsections) {
+                    break;
+                }
+                if (!empty($section->name)) {
+                    $title = format_string($section->name, true, array('context' => $context));
+                } else {
+                    $title = $format->get_section_name($section);
+                }
+                $odd = $r % 2;
+            
+                if ($format->is_section_current($section)) {
+                    $text .= html_writer::start_tag('li', array('class' => 'section-item current r'.$odd.$selectedclass));
+                } else {
+                    $text .= html_writer::start_tag('li', array('class' => 'section-item r'.$odd.$selectedclass));
+                }
 
             if (empty($this->config) or !isset($this->config->enumerate) or is_null($this->config->enumerate) or !empty($this->config->enumerate)) {
                 $title = html_writer::tag('span', $i.' ', array('class' => 'section-number')).
                     html_writer::tag('span', $title, array('class' => 'section-title'));
-            } else {
-                $title = html_writer::tag('span', $title, array('class' => 'section-title'));
-            }
+                } else {
+                    $title = html_writer::tag('span', $title, array('class' => 'section-title'));
+                }
 
-            if (!$section->uservisible) {
-               $text .= html_writer::tag('s', $title, array('class' => 'dimmed_text'));
-            } else {
-              $text .= html_writer::link($format->get_view_url($section), $title, array('class' => $section->visible ? '' : 'dimmed'));
+                $sectionlink = html_writer::link($format->get_view_url($section), $title);
+                
+                if (!$section->visible) {
+                    $text .= html_writer::tag('s', $sectionlink, array('class' => 'dimmed_text'));
+                } else {
+                    $text .= $sectionlink;
+                }
+            
+                $text .= html_writer::end_tag('li');
+                $r++;
             }
-            $text .= html_writer::end_tag('li');
-            $r++;
         }
         $text .= html_writer::end_tag('ul');
 
